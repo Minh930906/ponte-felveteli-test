@@ -26,7 +26,7 @@ public class ImagesController {
     @GetMapping("meta")
     @ApiOperation(value = "List all uploaded images",notes = "Retrieve all uploaded images")
     public List<ImageMeta> listImages() {
-		return imageStore.findAll();
+        return imageStore.findAll();
     }
 
     @GetMapping("preview/{id}")

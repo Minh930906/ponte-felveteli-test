@@ -2,6 +2,7 @@ package hu.ponte.hr.services;
 
 import hu.ponte.hr.controller.ImageMeta;
 import hu.ponte.hr.exception.ApiException;
+import hu.ponte.hr.exception.impl.ImageNotFoundException;
 import hu.ponte.hr.exception.impl.InvalidFileFormatException;
 import hu.ponte.hr.exception.impl.SignatureGenerationException;
 import hu.ponte.hr.repository.ImageMetaRepository;
@@ -9,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
@@ -53,8 +53,8 @@ public class ImageStore {
     }
 
 
-    public ImageMeta findImageById(String id) throws FileNotFoundException {
-        return imageMetaRepository.findById(id).orElseThrow(()->new FileNotFoundException("file not found"));
+    public ImageMeta findImageById(String id) {
+        return imageMetaRepository.findById(id).orElseThrow(()->new ApiException(ImageNotFoundException.IMAGE_NOT_FOUND));
 
     }
 }

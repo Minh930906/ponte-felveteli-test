@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
@@ -13,6 +14,12 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(value = {RuntimeException.class})
     public ResponseEntity<Object> handler(RuntimeException e) {
+        HttpStatus badRequest = HttpStatus.INTERNAL_SERVER_ERROR;
+        return new ResponseEntity<>(e.getMessage(), badRequest);
+    }
+
+    @ExceptionHandler(value = {IOException.class})
+    public ResponseEntity<Object> handler(IOException e) {
         HttpStatus badRequest = HttpStatus.INTERNAL_SERVER_ERROR;
         return new ResponseEntity<>(e.getMessage(), badRequest);
     }
