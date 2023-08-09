@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Component
@@ -36,12 +37,12 @@ public class UploadController
             long size = file.getSize();
             byte[] imageData = file.getBytes();
 
-            imageStore.saveImage(id, name, mimeType, size,imageData);
+            imageStore.saveImage(id, name, mimeType, size, imageData);
 
             return ResponseEntity.ok("Image uploaded successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload image");
+        }catch (IOException er){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error while processing the uploaded image.");
         }
-
     }
 }
