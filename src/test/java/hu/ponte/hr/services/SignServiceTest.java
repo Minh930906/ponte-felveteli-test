@@ -16,10 +16,10 @@ class SignServiceTest {
 
     @Test
     void getSignatureWithStringToSign() {
-        String stringToSign = "Test1";
+        byte[] imageDataToSign = "ImageTest".getBytes();
         String base64Signature;
         try {
-            base64Signature = signService.getSignature(stringToSign);
+            base64Signature = signService.getSignature(imageDataToSign);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -28,10 +28,10 @@ class SignServiceTest {
 
     @Test
     void getSignatureWithEmptyStringToSign() {
-        String stringToSign = "";
+        byte[] imageDataToSign = "".getBytes();
         String base64Signature;
         try {
-            base64Signature = signService.getSignature(stringToSign);
+            base64Signature = signService.getSignature(imageDataToSign);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -40,9 +40,7 @@ class SignServiceTest {
 
     @Test
     void getSignatureWithNullStringToSign() {
-        assertThrows(NullPointerException.class, () -> {
-            signService.getSignature(null);
-        });
+        assertThrows(NullPointerException.class, () -> signService.getSignature(null));
 
     }
 }

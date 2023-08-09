@@ -1,12 +1,16 @@
 package hu.ponte.hr.services;
 
 import hu.ponte.hr.controller.ImageMeta;
+import hu.ponte.hr.exception.SignatureGenerationException;
 import hu.ponte.hr.repository.ImageMetaRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
 import java.util.List;
 
 @Service
@@ -24,11 +28,10 @@ public class ImageStore {
     public void saveImage(String id, String name, String mimeType,long size,byte[] imageData){
         String base64Signature = null;
         try {
-            base64Signature = signService.getSignature(name);
-        }catch (Exception er){
-            er.getMessage();
+            base64Signature = signService.getSignature(imageData);
+        } catch (NoSuchAlgorithmException | SignatureException | InvalidKeyException e) {
+            throw new SignatureGenerationException("Error with generating signature", e);
         }
-
         ImageMeta imageMeta = ImageMeta.builder()
                 .id(id)
                 .name(name)
@@ -40,7 +43,7 @@ public class ImageStore {
 
         imageMetaRepository.save(imageMeta);
 
-        log.info("Image has been saved");
+        log.info("Image " + name +" has been saved");
     }
 
 

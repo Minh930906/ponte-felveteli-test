@@ -10,7 +10,7 @@ import java.util.Base64;
 @Slf4j
 public class SignService {
 
-    public String getSignature(String name) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
+    public String getSignature(byte[] imageData) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
 
         log.info("Generating digital signature...");
 
@@ -23,8 +23,7 @@ public class SignService {
         Signature signature = Signature.getInstance("SHA256withRSA");
         signature.initSign(privateKey);
 
-        byte[] data = name.getBytes();
-        signature.update(data);
+        signature.update(imageData);
 
         byte[] digitalSignature = signature.sign();
 
